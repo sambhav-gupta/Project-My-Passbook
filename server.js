@@ -2,7 +2,7 @@ const express = require('express')
 const session = require('express-session')
 const path = require('path')
 const app = express()
-const {db,Users} = require('./database')
+const {db,Users , Friends} = require('./database')
 const multer = require('multer')
 const fs=require('fs')
 
@@ -55,22 +55,22 @@ app.use( session({
 )
 
 app.use('/',express.static(path.join(__dirname,'./public')))
-app.post('/dp',(req,res)=>{
-    const paath = "./public/uploads/myimage-" + req.body.username
-    let arr=[".jpeg",".png",".jpg"]
-    for(let i=0;i<arr.length;i++){
-       try {
-           if (fs.existsSync(paath+arr[i])) {
-             res.send(arr[i])
-           } else {
-             console.log("File does not exist.")
-           }
-         } catch(err) {
-           console.error(err)
-         }
-    }
+// app.post('/dp',(req,res)=>{
+//     const paath = "./public/uploads/myimage-" + req.body.username
+//     let arr=[".jpeg",".png",".jpg"]
+//     for(let i=0;i<arr.length;i++){
+//        try {
+//            if (fs.existsSync(paath+arr[i])) {
+//              res.send(arr[i])
+//            } else {
+//              console.log("File does not exist.")
+//            }
+//          } catch(err) {
+//            console.error(err)
+//          }
+//     }
    
-})
+// })
 
 app.get('/',(req,res)=>{
     if(req.session.page_views==0){
@@ -97,11 +97,13 @@ app.post('/signup',(req,res)=>{
                 let lastname = req.body.lname
                 let username = req.body.uname
                 let password = req.body.pword
+                let extension = path.extname(req.file.originalname)
             Users.create({
                 Firstname: firstname,
                 Lastname: lastname,
                 Username: username,
-                Password: password
+                Password: password,
+                Extension: extension
             }).then((user)=>{
                 res.redirect('/')
                 return
@@ -129,6 +131,45 @@ app.post('/signup',(req,res)=>{
 //     })
 // })
 
+app.post('/addfriend',(req,res)=>{
+Users.findOne(
+    {where:
+        {
+            Username : req.body.friendname
+    }
+}).then((user)=>{
+    if(user){
+        Friends.findOne({
+            where:{
+                Username:req.body.username,
+                Friend: req.body.friendname
+            }
+        }).then((friend)=>{
+            if(friend){
+                res.send("Already")
+        
+            }else{
+                Friends.create({
+                    Username: req.body.username,
+                    Friend: req.body.friendname
+                }).then((friend)=>{
+                    res.send("Success")
+                }).catch((err)=>{
+                    res.send("Failure")
+                })
+            
+            }
+            })
+    }else{
+        res.send("No existence")
+    }
+
+   
+
+  
+})
+})
+
 app.post('/signin',(req,res)=>{
     Users.findOne({
         where:{
@@ -147,12 +188,28 @@ app.post('/signin',(req,res)=>{
             res.send({
                 name: user.Firstname + " " + user.Lastname,
                 username: user.Username,
+                extension: user.Extension
                
             })
         }
     }).catch((err)=>{
         res.send(err)
     })
+})
+
+app.post('/getallusers',(req,res)=>{
+    let users = []
+    Users.findAndCountAll().then((user)=>{
+        for(let i=0;i<user.count;i++){
+           users.push({name:user.rows[i].dataValues.Username,
+            extension: user.rows[i].dataValues.Extension
+        })
+        }
+        res.send(users)
+    }).catch((err)=>{
+        res.send(err)
+    })
+
 })
 
 app.post('/signout',(req,res)=>{

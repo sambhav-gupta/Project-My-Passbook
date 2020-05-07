@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="http://code.jquery.com/jquery-3.4.1.js"></script>
+</head>
+<body>
+    <input id="inpuser" placeholder="Username">
+    <div id="adhiraj-seth" onclick="myfun(this.id)" class="append" style="width: 200px;height: 50px;border: 2px solid black;display: none;">adhiraj-seth</div>
+    <div id="sambhav-gupta" onclick="myfun(this.id)" class="append" style="width: 200px;height: 50px;border: 2px solid black;display: none;">sambhav-gupta</div>
+    <div id="devansh-sehgal" onclick="myfun(this.id)" class="append" style="width: 200px;height: 50px;border: 2px solid black;display: none;">devansh-sehgal</div>
+    <div id="abhishek-munjal"  onclick="myfun(this.id)" class="append" style="width: 200px;height: 50px;border: 2px solid black;display: none;">abhishek-munjal</div>
+
+    <script>
+        let arr=["sambhav-gupta","adhiraj-seth","devansh-sehgal","abhishek-munjal"]
+        let string = ""
+        $('#inpuser').click((e)=>{
+            console.log("clicked")
+        })
+  
+$('#inpuser').keypress((e)=>{
+    console.log($('#inpuser').val()+e.key)
+    let length = $('#inpuser').val().length
+        console.log(length)
+
+    for(let i=0;i<arr.length;i++){
+        if(arr[i].slice(0,length+1) == $('#inpuser').val()+e.key){
+            console.log(arr[i])
+            $('#'+arr[i]).show()
+
+        }else{
+            $('#'+arr[i]).hide()
+            continue
+        }
+    }
+})
+
+
+$('#inpuser').keydown((e)=>{
+if(e.which == 8){
+    console.log($('#inpuser').val())
+    if($('#inpuser').val().length == 1){
+       $('.append').hide()
+    }
+   
+
+}
+})
+
+function myfun(id){
+    console.log(id)
+}
+
+    </script>
+</body>
+</html>

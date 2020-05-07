@@ -24,7 +24,22 @@ const Users = db.define('user',{
     Password:{
         type: Seqeulize.STRING,
         allownull: false
+    },
+    Extension:{
+        type: Seqeulize.STRING,
+        allownull: false
     }
 })
 
-exports  = module.exports = {db,Users}
+const Friends = db.define('friendlist',{
+    Username:{
+        type: Seqeulize.STRING,
+        allownull: false
+    },
+    Friend:{
+        type: Seqeulize.STRING,
+        allownull: false
+    }
+})
+
+exports  = module.exports = {db,Users,Friends}
