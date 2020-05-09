@@ -6,9 +6,31 @@
     <title>Document</title>
     <script src="http://code.jquery.com/jquery-3.4.1.js"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+<style>
+    #divlist::-webkit-scrollbar{
+        display: none;
+
+    }
+    .list {
+        background-color:  #024054;
+        color: white;
+    }
+    .list:hover {
+        background-color: whitesmoke;
+        color: black    ;
+    }
+    #divappend::-webkit-scrollbar{
+        display: none;
+
+    }
+    
+</style>
 </head>
 <body>
-    
+    <select id="sldiv" style="margin-left: 1290px;margin-top: 10px;">
+        <option>Profile</option>
+        <option>Logout</option>
+    </select>
     <div id="c1">
     <div class="container" style="margin-top: 50px;border: solid 2px black;">
         <div class="row">
@@ -62,15 +84,15 @@
     </div><br>
 
 
-    <div class="container" style="margin-left: 50px;margin-right: 0px;" id="divcontent">
+    <div class="container" style="margin-left: 0px;margin-right: 0px;" id="divcontent">
         <div class="row">
-            <div class="col-4" style="padding: 0px;">
-                <div class="container">
-                    <div class="row" style="height:140px">
-                        <div class="col">
-                            <div id="divinfo" class="container"   style="height: 600px;border-right: 2px black solid;">
-                                <div class="row">
-                                    <!-- <div class="col-8"  style="display: inline;padding: 0px;"> 
+            <div class="col-4" style="padding: 0px;border-right: 2px solid black;">
+                <!-- <div class="container"> -->
+                    <!-- <div class="row" style="border-bottom: 2px solid green;"> -->
+                        <!-- <div class="col"> -->
+                            <div id="divinfo" class="container" style="border-bottom: 2px solid blue;">
+                                <div class="row" style="margin-bottom: 20px;">
+                                    <!-- <div class="col-8"  style="display: inline;padding: 0px;margin-left: 20px;"> 
                                         <b style="font-size: 18pt;">Welcome ${data.name} !!!</b> 
                                     </div>
                                     <div class="col-3" style="display: inline;padding: 0px;">
@@ -78,46 +100,171 @@
                                     </div> -->
                                 </div>
                             </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                       <div class="col">
-                        <div class="input-group mb-3" style="width: 300px;">
+                        <!-- </div> -->
+                    <!-- </div><br> -->
+                    <!-- <div class="row" style="border-bottom: 2px solid green ;"> -->
+                       <!-- <div class="col"> --><br>
+                        <div>
+                            
+                        <div class="input-group mb-3" style="width: 300px;margin-left: 10px;" >
                             <input type="text" class="form-control" placeholder="Add Friend" aria-label="Recipient's username" aria-describedby="button-addon2" id="inpuser">
                             <div class="input-group-append">
-                              <button class="btn btn-outline-secondary" type="button" id="btnfriend">Button</button>
+                              <button class="btn btn-outline-secondary" type="button" id="btnfriend">Add</button>
                             </div>
                           </div>
                           
                            
-                           <div id="friendlist"></div>
-                    
-                    <!-- <div style="border-bottom:1px solid black;width: 220px;background-color: yellowgreen;height: 50px;text-align: center;font-weight: bolder;font-size: 11pt;font-family: Arial, Helvetica, sans-serif;">
+                           <div id="friendlist" style="margin-left:10px;margin-bottom: 5px;height: 150px;overflow-y: scroll;display: none;">
+          
+                    <!-- <div style="border-bottom:1px solid black;width: 280px;background-color: yellowgreen;height: 50px;text-align: center;font-weight: bolder;font-size: 11pt;font-family: Arial, Helvetica, sans-serif;">
                         
                         Sambhav-gupta
                         <img  src="./uploads//myimage-sambhav-gupta.jpg" style="height: 40px;width: 40px;border-radius: 50%;margin-top: 5px;">
-                    </div>   -->
+                    </div>   
+                    <div style="border-bottom:1px solid black;width: 280px;background-color: yellowgreen;height: 50px;text-align: center;font-weight: bolder;font-size: 11pt;font-family: Arial, Helvetica, sans-serif;">
+                        
+                        Sambhav-gupta
+                        <img  src="./uploads//myimage-sambhav-gupta.jpg" style="height: 40px;width: 40px;border-radius: 50%;margin-top: 5px;">
+                    </div>   
+                   
+                    <div style="border-bottom:1px solid black;width: 280px;background-color: yellowgreen;height: 50px;text-align: center;font-weight: bolder;font-size: 11pt;font-family: Arial, Helvetica, sans-serif;">
+                        
+                        Sambhav-gupta
+                        <img  src="./uploads//myimage-sambhav-gupta.jpg" style="height: 40px;width: 40px;border-radius: 50%;margin-top: 5px;">
+                    </div>   
+                   
+                    <div style="border-bottom:1px solid black;width: 280px;background-color: yellowgreen;height: 50px;text-align: center;font-weight: bolder;font-size: 11pt;font-family: Arial, Helvetica, sans-serif;">
+                        
+                        Sambhav-gupta
+                        <img  src="./uploads//myimage-sambhav-gupta.jpg" style="height: 40px;width: 40px;border-radius: 50%;margin-top: 5px;">
+                    </div>   
+                    
+                    <div style="border-bottom:1px solid black;width: 280px;background-color: yellowgreen;height: 50px;text-align: center;font-weight: bolder;font-size: 11pt;font-family: Arial, Helvetica, sans-serif;">
+                        
+                        Sambhav-gupta
+                        <img  src="./uploads//myimage-sambhav-gupta.jpg" style="height: 40px;width: 40px;border-radius: 50%;margin-top: 5px;">
+                    </div>   
+                    -->
+                   
                       
-                    
-                    
-                       </div> 
-                    </div>
+                      
                 </div>
-                <div class="row">fsdjhbsdfjkbfsdb</div>
+            </div>
+                    
+                       <!-- </div> 
+                    </div>
+                </div>   <br> -->
+                <br>
+                <div  id="divlist" style="border-top: 2px solid red;overflow-y: scroll;height: 500px;">                  
+                   
+
+<!-- <div id="btn${friendlist[i].name}"  class="list"  onclick="Load(this.id)" style="text-align: center;font-size: 15pt;border-bottom: 2px black solid;">adhiraj-seth
+<img src="./uploads/myimage-adhiraj-seth.jpg" style="width:40px;height:40px;border-radius:50%;"></div> -->
+
+                                    
+
+
+
+
+</div>
                 
             </div>
-            <div class="col-5" style="height: 600px; border-right: 2px solid black;margin-left: 10px;">
-            </div>
+            <div class="col-6" style="height: 600px; border-right: 2px solid black;margin-left: 10px;padding: 0px;">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-8" style="border-right: 2px solid green;">
+                           
+                           <form  enctype="multipart/form-data" id="frmbill"  method="POST">
+                            <label>Enter Amount</label>
+                            <div class="input-group mb-3" style="width: 300px;" >
+                               <input type="number" class="form-control" placeholder="Rs." aria-label="Recipient's username" aria-describedby="button-addon2"  id="inpamt">
+                           </div>
+                               <div class="form-group">
+                                 <input class="form-control" placeholder="Describe" style="width: 300px;" name="inpdescribe">
+                               
+                               </div>
+                             
+                               <div class="input-group mb-3" style="width: 297px;">
+                               
+                                   <div class="custom-file">
+                                       <input type="file"  accept=".jpeg,.jpg,.png" class="custom-file-input" aria-describedby="inputGroupFileAddon03" name="bill" id="inpbill"> 
+
+                                       <label class="custom-file-label" for="inputGroupFile03">Choose file</label>
+                                     </div>
+                                     <div class="input-group-append">
+                                        <button type="button" class="btn btn-info" id="btnupload"><svg class="bi bi-card-image" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                            <path fill-rule="evenodd" d="M14.5 3h-13a.5.5 0 00-.5.5v9a.5.5 0 00.5.5h13a.5.5 0 00.5-.5v-9a.5.5 0 00-.5-.5zm-13-1A1.5 1.5 0 000 3.5v9A1.5 1.5 0 001.5 14h13a1.5 1.5 0 001.5-1.5v-9A1.5 1.5 0 0014.5 2h-13z" clip-rule="evenodd"/>
+                                            <path d="M10.648 7.646a.5.5 0 01.577-.093L15.002 9.5V13h-14v-1l2.646-2.354a.5.5 0 01.63-.062l2.66 1.773 3.71-3.71z"/>
+                                            <path fill-rule="evenodd" d="M4.502 7a1.5 1.5 0 100-3 1.5 1.5 0 000 3z" clip-rule="evenodd"/>
+                                          </svg></button>
+                                    </div>
+                                    
+                                   </div>
+                                   <label style="font-size: 10pt;">( 1 file of type (.JPEG/.JPG/.PNG))</label><br>
+                                   <ul id="ulmenu" class="list-group list-group-horizontal-sm" style="border: 2px solid red;margin-bottom: 10px;display: none;">
+                                    <!-- <li class="list-group-item" id="li${id}">
+                                        <b>
+                                            adhiraj-seth
+                                        </b>
+                                      
+                                        <button id="btn${id}" onclick="remove(this.id)" class="btn btn-danger btn-sm"  >
+                                       X
+                                            
+                                            </button>
+                                        </li>
+                                        <li class="list-group-item" id="li${id}">
+                                            <b>
+                                                adhiraj-seth
+                                            </b>
+                                          
+                                            <button id="btn${id}" onclick="remove(this.id)" class="btn btn-danger btn-sm"  >
+                                           X
+                                                
+                                                </button>
+                                            </li> -->
+                                   </ul>
+                                 
+                    
+                                    <div class="input-group mb-3" style="width: 300px;" >
+                                        <input type="text" class="form-control" placeholder="Search" aria-label="Recipient's username" aria-describedby="button-addon2" id="inpname">
+                                        <div class="input-group-append">
+                                            <button class="btn btn-outline-secondary" type="button">Split With</button>
+                                          </div>
+                                    </div>
+                                    <div id="contactlist" style="margin-left:10px;margin-bottom: 5px;height: 150px;overflow-y: scroll;display: none;">
+                                        </div>
+                              
+                                   <input type="submit" id="btnsplit" value="Split">
+                           
+                           </form>
+                          
+                         
+
+                        </div>
+                        <div class="col-4">
+                            <div id="divappend"style="overflow-y:scroll;height: 200px;border:2px solid black ;display:none;">
+                                <!-- <ul id="ulphoto">
+
+                                </ul> -->
+                               
+                            </div>
+                            <button id="btnremove" style="display: none;">Remove All</button>
+                    </div>
+                </div>
+
+              
+              
+
+           
             
-            <div class="col-2" style="height: 50px; ">
-                <select id="sldiv">
-                    <option>Profile</option>
-                    <option>Logout</option>
-                </select>
             </div>
+          
+            
+            
         </div>
     </div>
- 
+    
+    
     <!-- <button id="btnlogout">Logout</button>  -->
     <script src="login.js"></script>
    

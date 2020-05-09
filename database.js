@@ -42,4 +42,43 @@ const Friends = db.define('friendlist',{
     }
 })
 
-exports  = module.exports = {db,Users,Friends}
+const Passbook = db.define('passbook',{
+    Lender:{
+        type: Seqeulize.STRING,
+        allownull: false
+    },
+    Receiver:{
+        type: Seqeulize.STRING,
+        allownull: false
+    },
+    Day:{
+        type: Seqeulize.INTEGER,
+        allownull: false
+    },
+    Month:{
+        type: Seqeulize.INTEGER,
+        allownull: false
+    },
+    Year:{
+        type: Seqeulize.INTEGER,
+        allownull: false
+    },
+    Time:{
+        type: Seqeulize.STRING,
+        allownull: false
+    },
+    Amount:{
+        type: Seqeulize.FLOAT,
+        allownull: false
+    },
+    Bill:{
+        type: Seqeulize.STRING,
+        allownull: true
+    },
+    Description:{
+        type: Seqeulize.STRING,
+        allownull: true
+    }
+
+})
+exports  = module.exports = {db,Users,Friends,Passbook}
