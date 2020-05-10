@@ -172,7 +172,9 @@ app.post('/uploadbill',(req,res)=>{
                                 Year: new Date().getFullYear(),
                                 Time:  new Date().getHours() + ':' + new Date().getMinutes()+ ':' + new Date().getSeconds(),
                                 Amount: req.body.amount,
-                                Description: req.body.inpdescribe
+                                Description: req.body.inpdescribe,
+                                Deleted: false
+
             
                             })
 
@@ -186,7 +188,9 @@ app.post('/uploadbill',(req,res)=>{
                         Year: new Date().getFullYear(),
                         Time:  new Date().getHours() + ':' + new Date().getMinutes()+ ':' + new Date().getSeconds(),
                         Amount: req.body.amount,
-                        Description: req.body.inpdescribe
+                        Description: req.body.inpdescribe,
+                        Deleted: false
+
     
                     })
                         
@@ -199,7 +203,7 @@ app.post('/uploadbill',(req,res)=>{
               
                 console.log(req.body.receiver.length)
                
-                res.send("Added Rs." + req.body.amount + "to" + req.body.receiver + " Account")
+                res.send("Added Rs. "+ req.body.amount + " to " + "(" + req.body.receiver + ")'s Account")
                 return
             }
             else{
@@ -220,7 +224,8 @@ app.post('/uploadbill',(req,res)=>{
                     Time: new Date().getHours() + ':' + new Date().getMinutes()+ ':' + new Date().getSeconds(),
                     Amount: req.body.amount,
                     Bill: req.file.filename,
-                    Description: req.body.inpdescribe
+                    Description: req.body.inpdescribe,
+                    Deleted: false
 
                 })
                     
@@ -236,7 +241,8 @@ app.post('/uploadbill',(req,res)=>{
                         Time: new Date().getHours() + ':' + new Date().getMinutes()+ ':' + new Date().getSeconds(),
                         Amount: req.body.amount,
                         Bill: req.file.filename,
-                        Description: req.body.inpdescribe
+                        Description: req.body.inpdescribe,
+                        Deleted: false
     
                     })
                         
@@ -247,7 +253,7 @@ app.post('/uploadbill',(req,res)=>{
                }
                 
                
-                res.end("Uploaded Successfully")
+                res.end("Added Rs. "+ req.body.amount + " to " + "(" + req.body.receiver + ")'s Account" + "And Uploaded the Bill "  + req.file.originalname   )
                
                
             }
@@ -376,7 +382,63 @@ app.post('/signout',(req,res)=>{
     res.send("loggedout")
 })
 
+app.post('/getaccountdetailsgreen',(req,res)=>{
+    let receiving = []
+    Passbook.findAndCountAll({
+        where:{
+            Lender: req.body.lender,
+            receiver: req.body.receiver
+        }
+    }).then((account)=>{
+        if(account.count !=0){
+            for(let i=0;i<account.count;i++){
+                receiving.push(account.rows[i].dataValues)
+            }
+            res.send(receiving)
 
+
+        }else{
+            res.send("No data")
+
+        }
+    })
+})
+
+app.post('/getaccountdetailsred',(req,res)=>{
+    let giving = []
+    Passbook.findAndCountAll({
+        where:{
+            Lender: req.body.receiver,
+            receiver: req.body.lender
+        }
+    }).then((account)=>{
+        if(account.count !=0){
+            for(let i=0;i<account.count;i++){
+                giving.push(account.rows[i].dataValues)
+            }
+            res.send(giving)
+
+
+        }else{
+            res.send("No data")
+
+        }
+    })
+})
+
+app.post('/deleteitem',(req,res)=>{
+    Passbook.update({Deleted:true},{where:{id:req.body.id}}).then((user)=>{
+        res.send(user)
+    })
+})
+
+app.post('/getitemhistory',(req,res)=>{
+    Passbook.findOne({where:{
+        id: req.body.id
+    }}).then((user)=>{
+        res.send(user)
+    })
+})
 db.sync().then(()=>{console.log("Database Created")})
 app.listen(8888,()=>{
     console.log("Server at http://localhost:8888")

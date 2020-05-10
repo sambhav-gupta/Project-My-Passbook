@@ -110,7 +110,7 @@ btnsignin.click(()=>{
                             contactlist.push(data[i])
                             if(friendlist.findIndex(j => j.name == data[i] ) !=-1){
                                 let index = friendlist.findIndex(j => j.name == data[i] )
-                                $('#divlist').append(`<div id="btn${friendlist[index].name}" onclick="Load(this.id)" class="list" style="text-align: center;font-size: 15pt;border-bottom: 2px black solid;">${friendlist[index].name}
+                                $('#divlist').append(`<div id="btnaccount${friendlist[index].name}" onclick="Load(this.id)" class="list" style="text-align: center;font-size: 15pt;border-bottom: 2px black solid;">${friendlist[index].name}
                              <img src="./uploads/myimage-${friendlist[index].name}${friendlist[index].extension}" style="width:40px;height:40px;border-radius:50%;"></div>`)
 
                                 
@@ -262,6 +262,7 @@ $('#inpname').keydown((e)=>{
     function secondfun(id){
         
         let name = id.split("contact")[1]
+        $('#inpname').val("")
         $('#contactlist').hide()
         $('#ulmenu').show()
         $('#ulmenu').append(
@@ -295,10 +296,12 @@ $('#inpname').keydown((e)=>{
         
      })
      $('#btnupload').click(()=>{
+
         if($('#inpbill').prop('files').length == 0){
             alert("No Image Selected")
         
             $('#inpbill').val("")
+            return
             
         }
 
@@ -309,6 +312,7 @@ $('#inpname').keydown((e)=>{
             
             
         // }
+        $('#divappend').empty()
         $('#divappend').show()
         $('#btnremove').show()
         console.log($('#inpbill').prop('files'))
@@ -335,6 +339,7 @@ $('#btnremove').hide()
     $("#frmbill").submit(function(e) {
         e.preventDefault(); 
 let amount = $('#inpamt').val()
+
 if(amount ==0){
     alert("Amount cant be 0")
     $('#inpbill').val("")
@@ -346,7 +351,10 @@ if(amount ==0){
             arr.push($(this).text())
         })
        
-
+if(arr.length ==0){
+    alert("Please select Someone")
+    return
+}
         console.log(arr)
         let receivers = arr.length + 1
         let finalamount = amount/receivers
@@ -390,4 +398,197 @@ $('#ulmenu').hide()
         });
     });
 
+    function Load(id){
+        let receiving = 0
+        let giving = 0
+        $('#btnhide').show()
+        $('#divowe').empty()
+        $('#ulaccount').empty()
+        id = id.split("btnaccount")[1]
+        $('#rowadd').hide()
+        $('#friendaccount').show()
+        $('#divupper').hide()
+        $('#divupper').empty()
+        $.post('/getaccountdetailsgreen',{
+            lender: currentuser.name,
+            receiver: id
+
+        },(data)=>{
+            console.log(data)
+            if(data == "No data"){
+                alert("No data with this account")
+                $('#rowadd').show()
+                $('#friendaccount').hide()
+                $('#btnhide').hide()
+return
+            }else{
+                for(let i=0;i<data.length;i++){
+                    if(data[i].Deleted){
+                        $('#ulaccount').append($(`
+                        <li class="list-group-item" id="${id}[[-]]${data[i].id}"  onclick="info(this.id)" style="color: green;">
+                        <b style="text-decoration: line-through;">Rs.${data[i].Amount}</b>
+                        
+                        </b>
+                        <div id="span${data[i].id}" style="height:60px;width:100px;display:inline;" class="diviteminfo"></div>
+                        
+                        </li>
+                        
+                        
+                        `))
+                    }else{
+                        receiving += data[i].Amount
+                        console.log(receiving)
+                        $('#ulaccount').append($(`
+                        <li class="list-group-item" id="${id}[[-]]${data[i].id}"  onclick="info(this.id)" style="color: green;">
+                        <b>Rs.${data[i].Amount}</b>
+                        <div id="span${data[i].id}" style="height:60px;width:100px;display:inline;" class="diviteminfo"></div>
+                        </li>
+                        
+                        
+                        `))
+                       
+        
+                    }
+                   
+
+                    }
+                    $('#divowe').append($(`
+                    <b style="color:green;">${id} owe you Rs. ${receiving}</b><br>
+                    
+                    `))
+                   
+
+            }
+           
+        })
+        $.post('/getaccountdetailsred',{
+            lender: currentuser.name,
+            receiver: id
+
+        },(data)=>{
+            console.log(data)
+            if(data == "No data"){
+                return
+                
+            }else{
+                for(let i=0;i<data.length;i++){
+                    if(data[i].Deleted){
+                        $('#ulaccount').append($(`
+                        <li class="list-group-item" id="${id}[[-]]${data[i].id}" onclick="info(this.id)"  style="color: red;text-align: right;">
+                        <b style="text-decoration: line-through;">Rs.${data[i].Amount}</b>
+                        <div id="span${data[i].id}" style="height:60px;width:100px;display:inline;" class="diviteminfo"></div>
+                        </li>
+                        
+                        
+                        `))
+                    }else{
+                        giving += data[i].Amount
+                    console.log(giving)
+                    $('#ulaccount').append($(`
+                    <li class="list-group-item" id="${id}[[-]]${data[i].id}" onclick="info(this.id)"  style="color: red;text-align: right;">
+                    <b>Rs.${data[i].Amount}</b>
+                    <div id="span${data[i].id}" style="height:60px;width:100px;display:inline;" class="diviteminfo"></div>
+                    </li>
+                    
+                    
+                    `))
+                   
+    
+                }
+              
+
+                    }
+                    $('#divowe').append($(`
+                    <b style="color:red;">You owe Rs.${giving} to ${id}</b><br>
+                    
+                    `))
+                    
+               
+
+            }
+           
+        })
+      
+
+
+    }
    
+    $('#btnhide').click(()=>{
+        $('#friendaccount').hide()
+        $('#rowadd').show()
+        $('#btnhide').hide()
+
+    })
+
+    function info(id){
+        $('.diviteminfo').empty()
+        let name = id.split("[[-]]")[0]
+        let number = id.split("[[-]]")[1]
+        console.log("clicked" + id)
+        $('#divupper').empty()
+        $('#divupper').hide()
+        $('#divupper').append($(`
+        <button id="${name}btndelete${number}" class="btn btn-primary" style="margin-left: 350px" onclick="deleteitem(this.id)"><svg class="bi bi-trash-fill" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+        <path fill-rule="evenodd" d="M2.5 1a1 1 0 00-1 1v1a1 1 0 001 1H3v9a2 2 0 002 2h6a2 2 0 002-2V4h.5a1 1 0 001-1V2a1 1 0 00-1-1H10a1 1 0 00-1-1H7a1 1 0 00-1 1H2.5zm3 4a.5.5 0 01.5.5v7a.5.5 0 01-1 0v-7a.5.5 0 01.5-.5zM8 5a.5.5 0 01.5.5v7a.5.5 0 01-1 0v-7A.5.5 0 018 5zm3 .5a.5.5 0 00-1 0v7a.5.5 0 001 0v-7z" clip-rule="evenodd"/>
+      </svg></button>
+        <button id="btninfo${number}" class="btn btn-primary" onclick="infoitem(this.id)"><svg class="bi bi-info-square" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+        <path fill-rule="evenodd" d="M14 1H2a1 1 0 00-1 1v12a1 1 0 001 1h12a1 1 0 001-1V2a1 1 0 00-1-1zM2 0a2 2 0 00-2 2v12a2 2 0 002 2h12a2 2 0 002-2V2a2 2 0 00-2-2H2z" clip-rule="evenodd"/>
+        <path d="M8.93 6.588l-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588z"/>
+        <circle cx="8" cy="4.5" r="1"/>
+      </svg></button>
+        <button onclick="removebuttons()" class="btn btn-primary" ><svg class="bi bi-x" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+        <path fill-rule="evenodd" d="M11.854 4.146a.5.5 0 010 .708l-7 7a.5.5 0 01-.708-.708l7-7a.5.5 0 01.708 0z" clip-rule="evenodd"/>
+        <path fill-rule="evenodd" d="M4.146 4.146a.5.5 0 000 .708l7 7a.5.5 0 00.708-.708l-7-7a.5.5 0 00-.708 0z" clip-rule="evenodd"/>
+      </svg></button>
+        
+        
+        `))
+        $('#divupper').show()
+
+    }
+    function removebuttons(){
+        $('#divupper').hide()
+        $('#divupper').empty()
+        $('.diviteminfo').hide()
+        $('.diviteminfo').empty()
+    }
+
+    function deleteitem(id){
+        let number = id.split("btndelete")[1]
+        let name = id.split("btndelete")[0]
+        $.post('/deleteitem',{
+            id: number
+        },(data)=>{
+            $('#'+id).css("text-decoration", "line-through")
+           
+                alert("deleted item")
+                $('#divupper').empty()
+                $('#divupper').hide()
+                Load("btnaccount"+name)
+
+            
+        })
+        
+
+    }
+    function infoitem(id){
+
+        let item  = id.split("btninfo")[1]
+        console.log(item)
+        $.post('/getitemhistory',{id : item},(data)=>{
+            $('#span'+item).append(
+                $(`
+               <t> Date : ${data.Day}/${data.Month}/${data.Year}
+                Time: ${data.Time}
+                ${data.Description}</t>
+                `)
+               
+            )
+
+
+        })
+        $('.diviteminfo').show()
+       
+
+    }
+    

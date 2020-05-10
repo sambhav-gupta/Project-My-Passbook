@@ -78,6 +78,11 @@ const Passbook = db.define('passbook',{
     Description:{
         type: Seqeulize.STRING,
         allownull: true
+    },
+    Deleted:{
+        type: Seqeulize.BOOLEAN,
+        allownull: true,
+        
     }
 
 })
